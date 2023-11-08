@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Babylonica&family=Raleway:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Manrope', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    height: 41.688rem;
+    width: 100%;
+    position: relative;
+}
+header .banner {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+header .logo {
+    position: absolute;
+    top: 3.188rem;
+    left: 4.313rem;
+    z-index: 2;
+    height: 1.579rem;
+    width: 12.938rem;
+}
+
+header .header-container {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.header-container .slogan {
+    width: 59.625rem;
+    font-family: 'Anton', sans-serif;
+    font-size: 2.75rem;
+    color: #FFD15B;
+    text-align: center;
+}
+
+.header-container form {
+    width: 59.625rem;
+    height: 4.5rem;
+    border: none;
+    border-radius: 11px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+form #search-plate {
+    border: none;
+    width: 100%;
+    padding: 24px 35px;
+    font-size: 1rem;
+    color: #7A7A7A;
+    outline: none;
+}
+
+form button {
+    position: absolute;
+    z-index: 2;
+    background-color: #1B1B1B;
+    color: #fff;
+    margin: 10px;
+    height: 3.25rem;
+    width: 3.188rem;
+    border: none;
+    border-radius: 10px;
+    right: 0;
+    cursor: pointer;
+    transition: ease-out 300ms;
+}
+
+form button:hover {
+    background-color: #FFD15B;
+}
+
+form button:hover .fa-magnifying-glass {
+    color: black;
+}
+
+/* MAIN */
+
+main {
+    height: auto;
+    background: #EDEDED;
+    padding: 30px 104px;
+}
+main .recipes-filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+main .recipes-filter-container h2 {
+    font-size: 1.313rem;
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+
+}
+
+main .recipes-filter-container .filters {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 65px;
+}
+
+.filters select {
+    height: 3.5rem;
+    width: 11.75rem;
+    display: flex;
+    align-items: center;
+    gap: 63px;
+    outline: none;
+    border: none;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #1B1B1B;
+    border-radius: 0.688rem;
+    padding: 16px;
+    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right #ddd;
+    -moz-appearance:none !important;
+    -webkit-appearance: none !important; 
+    appearance: none !important;
+    background-color: #fff;
+    background-position-x: 10.125rem;
+}
+
+
+/*Recipes card*/
+.recipes-card-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.recipe-card {
+    height: 45.688rem;
+    width: 23.75rem;
+    border: none;
+    border-radius: 1.313rem;
+    overflow: hidden;
+    background-color: #fff;
+    margin-bottom: 66px;
+}
+.recipe-card .picture-info {
+    width: 100%;
+    height: 15.813rem;
+    position: relative;
+}
+
+.recipe-card .picture-info img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recipe-card .picture-info .prep-time {
+    position: absolute;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 0.938rem;
+    background-color: #FFD15B;
+    top: 21px;
+    right: 20px;
+    z-index: 2;
+}
+.recipe-card .recipe {
+    padding: 32px 25px;
+}
+.recipe-card .recipe .recipe-name {
+    font-family: 'Anton' sans-serif;
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: #000;
+}
+
+.recipe-card .recipe .preparation,
+.recipe-card .recipe .ingredients {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.recipe-card .recipe .title {
+    color: #7A7A7A;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.recipe-card .recipe .preparation p {
+    font-size: 0.875rem;
+}
+
+.recipe-card .recipe .ingredients ul {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+} 
+.recipe-card .recipe .ingredients ul li{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+.recipe-card .recipe .ingredients ul li p {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+.recipe-card .recipe .ingredients ul li span {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #7A7A7A;
+}

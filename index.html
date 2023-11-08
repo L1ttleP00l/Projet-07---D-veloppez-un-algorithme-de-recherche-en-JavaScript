@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <title>Les petits plats</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header>
+        <img src="assets/images/bg-header.jpg" alt="header" class="banner">
+        <img src="assets/images/logo.svg" alt="logo" class="logo">
+        <div class="header-container">
+        <h1 class="slogan">CHERCHEZ PARMI PLUS DE 1500 RECETTES <br> DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h1>
+        <form action="">
+            <input type="text" id="search-plate" placeholder="Rechercher une recette, un ingrédient, ...">
+            <button type="submit">
+            <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+            </button>
+        </form>
+        </div>        
+    </header>   
+    <main>
+        <div class="recipes-filter-container">
+            <form action="" class="filters">
+                <select name="ingredients" id="ingredients">
+                    <option value="">Ingrédients</option>
+                    <option value="beurre">Beurre</option>
+                    <option value="farine">Farine</option>
+                </select>
+                <select name="appareils" id="appareils">
+                    <option value="">Appareils</option>
+                    <option value="beurre">Beurre</option>
+                    <option value="farine">Farine</option>
+                </select>
+                <select name="ustensiles" id="ustensiles">
+                    <option value="">Ustensiles</option>
+                    <option value="beurre">Beurre</option>
+                    <option value="farine">Farine</option>
+                </select>
+            </form>
+            <h2>1500 recettes</h2>
+        </div>
+        
+        <div class="recipes-card-container">
+            <!--Here the recipes card-->
+        </div>
+    </main>
+    <script src="scripts/index.js"></script>
+</body>
+</html>
