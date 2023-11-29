@@ -15,7 +15,7 @@
         <img src="assets/images/logo.svg" alt="logo" class="logo">
         <div class="header-container">
         <h1 class="slogan">CHERCHEZ PARMI PLUS DE 1500 RECETTES <br> DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h1>
-        <form action="">
+        <form>
             <input type="text" id="search-plate" placeholder="Rechercher une recette, un ingrédient, ...">
             <button type="submit">
             <i class="fa-solid fa-magnifying-glass fa-lg"></i>
@@ -25,24 +25,69 @@
     </header>   
     <main>
         <div class="recipes-filter-container">
-            <form action="" class="filters">
-                <select name="ingredients" id="ingredients">
-                    <option value="">Ingrédients</option>
-                    <option value="beurre">Beurre</option>
-                    <option value="farine">Farine</option>
-                </select>
-                <select name="appareils" id="appareils">
-                    <option value="">Appareils</option>
-                    <option value="beurre">Beurre</option>
-                    <option value="farine">Farine</option>
-                </select>
-                <select name="ustensiles" id="ustensiles">
-                    <option value="">Ustensiles</option>
-                    <option value="beurre">Beurre</option>
-                    <option value="farine">Farine</option>
-                </select>
-            </form>
-            <h2 id="recipe-count"></h2>
+
+            <div class="filters-container">
+                
+                <div class="filters">
+                    <div class="dropdown-filter">
+                        <div class="select-btn">
+                            <span>Ingrédients</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="content">
+                            <div class="search">
+                                <input type="text" id="ingredients-search" placeholder="">
+                                <i class="fa-solid fa-times clear-search" style="display: none;"></i>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <ul id="ingredients-list" class="options"></ul>
+                        </div>
+                    </div>
+                    <div class="selected-ingredients"></div>
+
+                </div>
+
+                <div class="filters">
+                    <div class="dropdown-filter">
+                        <div class="select-btn">
+                            <span>Appareils</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="content">
+                            <div class="search">
+                                <input type="text" id="appliances-search" placeholder="">
+                                <i class="fa-solid fa-times clear-search" style="display: none;"></i>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <ul id="appliances-list" class="options"></ul>
+                        </div>
+                    </div>
+                    <div class="selected-appliances"></div>
+
+                </div>
+
+                <div class="filters">
+                    <div class="dropdown-filter">
+                        <div class="select-btn">
+                            <span>Ustensiles</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="content">
+                            <div class="search">
+                                <input type="text" id="ustensils-search" placeholder="">
+                                <i class="fa-solid fa-times clear-search" style="display: none;"></i>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <ul id="ustensils-list" class="options"></ul>
+                        </div>
+                    </div>
+                    <div class="selected-ustensils"></div>
+
+                </div>
+                
+            </div>
+              
+            <h2 id="recipe-count">0 recette</h2>
         </div>
         
         <div class="recipes-card-container">
