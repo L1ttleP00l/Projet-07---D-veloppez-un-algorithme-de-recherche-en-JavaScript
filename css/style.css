@@ -119,9 +119,8 @@ main .recipes-filter-container .filters-container {
   justify-content: space-between;
 }
 
-main .recipes-filter-container .filters-container .filters {
-    /* position: relative; */
-}
+/* main .recipes-filter-container .filters-container .filters {
+} */
 
 main .recipes-filter-container .filters-container .filters .dropdown-filter {
     position: relative;

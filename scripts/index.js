@@ -230,3 +230,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// Gestionnaire pour rafraîchir la liste des recettes lorsque le dernier caractère est supprimé de la zone de recherche
+let previousSearchLength = 0;
+
+document.getElementById('search-plate').addEventListener('input', (event) => {
+    const currentSearchTerm = event.target.value;
+    const currentSearchLength = currentSearchTerm.length;
+
+    // Vérifier si le dernier caractère a été supprimé
+    if (previousSearchLength === 1 && currentSearchLength === 0) {
+        displayRecipes(recipes); // Affiche toutes les recettes si le dernier caractère est supprimé
+    }
+
+    // Mettre à jour la longueur précédente pour la prochaine vérification
+    previousSearchLength = currentSearchLength;
+});
+
+
+// Fonction de recherche par programmation fonctionnelle
+function searchRecipesWithFunctionalProgramming(keyword) {
+    return recipes.filter(recipe => 
+        recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
+        recipe.description.toLowerCase().includes(keyword.toLowerCase()) ||
+        recipe.ingredients.some(ing => ing.ingredient.toLowerCase().includes(keyword.toLowerCase())) ||
+        recipe.appliance.toLowerCase().includes(keyword.toLowerCase()) ||
+        recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(keyword.toLowerCase()))
+    );
+}
+
+document.querySelector('form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const searchTerm = document.getElementById('search-plate').value;
+    const filteredRecipes = searchRecipesWithFunctionalProgramming(searchTerm);
+    displayRecipes(filteredRecipes);
+});
+
+
+// Fonction de recherche par boucles
+// function searchRecipesWithLoops(keyword) {
+//     let results = [];
+//     for (let i = 0; i < recipes.length; i++) {
+//         const recipe = recipes[i];
+//         if (recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
+//             recipe.description.toLowerCase().includes(keyword.toLowerCase()) ||
+//             recipe.ingredients.some(ing => ing.ingredient.toLowerCase().includes(keyword.toLowerCase())) ||
+//             recipe.appliance.toLowerCase().includes(keyword.toLowerCase()) ||
+//             recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(keyword.toLowerCase()))) {
+//                 results.push(recipe);
+//         }
+//     }
+//     return results;
+// }
+
+// document.querySelector('form').addEventListener('submit', (event) => {
+//     event.preventDefault();
+//     const searchTerm = document.getElementById('search-plate').value;
+//     const filteredRecipes = searchRecipesWithLoops(searchTerm);
+//     displayRecipes(filteredRecipes);
+// });
