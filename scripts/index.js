@@ -208,6 +208,10 @@ function initFilterSearch(filterType, filterData) {
 
 // Calling initialization functions
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Resets search-plate content each time the page is refreshed
+    document.getElementById('search-plate').value = '';
+
     initFilterSearch('ingredients', sortedUniqueIngredients);
     initFilterSearch('appliances', sortedUniqueAppliances);
     initFilterSearch('ustensils', sortedUniqueUstensils);
@@ -216,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+
     // Existing initializations
     initFilterSearch('ingredients', sortedUniqueIngredients);
     initFilterSearch('appliances', sortedUniqueAppliances);
@@ -235,11 +240,16 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('search-plate').addEventListener('input', (event) => {
     const searchTerm = event.target.value;
 
-    // Check if the search field is empty
-    if (searchTerm.length === 0) {
+    if (searchTerm.length >= 3) {
+        // Effectuer la recherche et afficher les résultats
+        const filteredRecipes = searchRecipesWithFunctionalProgramming(searchTerm);
+        displayRecipes(filteredRecipes);
+    } else {
+        // Si moins de 3 caractères sont saisis, afficher toutes les recettes
         displayRecipes(recipes);
     }
 });
+
 
 // Search function using functional programming
 function searchRecipesWithFunctionalProgramming(keyword) {
