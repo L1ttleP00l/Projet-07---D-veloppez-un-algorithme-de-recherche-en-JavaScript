@@ -31,6 +31,10 @@ function displayRecipes(recipesToDisplay) {
 
     // Mettre à jour le compteur de recettes
     document.getElementById('recipe-count').textContent = recipesToDisplay.length + ' recettes';
+
+    updateFilterList('ingredients-search', '', recipesToDisplay);
+    updateFilterList('appliances-search', '', recipesToDisplay);
+    updateFilterList('ustensils-search', '', recipesToDisplay);
 }
 
 // Fonction de filtrage des recettes
@@ -68,7 +72,7 @@ function closeAllFilterMenus() {
     // Réinitialiser les champs de recherche de filtre et mettre à jour les listes
     document.querySelectorAll('.filters .search input').forEach(input => {
         input.value = '';
-        updateFilterList(input.id, '');
+        // updateFilterList(input.id, '', recipes);
 
         // Masquer l'icône de suppression (croix)
         const clearIcon = input.nextElementSibling;
@@ -103,32 +107,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }, true);
 });
 
-// Extraction et traitement des données uniques pour chaque catégorie
-const uniqueIngredients = new Set();
-const uniqueAppliances = new Set();
-const uniqueUstensils = new Set();
+// // Extraction et traitement des données uniques pour chaque catégorie
+// const uniqueIngredients = new Set();
+// const uniqueAppliances = new Set();
+// const uniqueUstensils = new Set();
 
-recipes.forEach(recipe => {
-    recipe.ingredients.forEach(ingredient => uniqueIngredients.add(ingredient.ingredient));
-    uniqueAppliances.add(recipe.appliance);
-    recipe.ustensils.forEach(utensil => uniqueUstensils.add(utensil));
-});
+// recipes.forEach(recipe => {
+//     recipe.ingredients.forEach(ingredient => uniqueIngredients.add(ingredient.ingredient));
+//     uniqueAppliances.add(recipe.appliance);
+//     recipe.ustensils.forEach(utensil => uniqueUstensils.add(utensil));
+// });
 
-// Fonction pour obtenir des données uniques triées
-function getUniqueSortedData(dataSet) {
-    return Array.from(dataSet).map(item =>
-        item.charAt(0).toUpperCase() + item.substring(1).toLowerCase()
-    ).sort((a, b) => a.localeCompare(b));
+// // Fonction pour obtenir des données uniques triées
+// function getUniqueSortedData(dataSet) {
+//     return Array.from(dataSet).map(item =>
+//         item.charAt(0).toUpperCase() + item.substring(1).toLowerCase()
+//     ).sort((a, b) => a.localeCompare(b));
+// }
+
+// const sortedUniqueIngredients = getUniqueSortedData(uniqueIngredients);
+// const sortedUniqueAppliances = getUniqueSortedData(uniqueAppliances);
+// const sortedUniqueUstensils = getUniqueSortedData(uniqueUstensils);
+
+function myFunction(recipes) {
+    // Extraction et traitement des données uniques pour chaque catégorie
+    const uniqueIngredients = new Set();
+    const uniqueAppliances = new Set();
+    const uniqueUstensils = new Set();
+
+    recipes.forEach(recipe => {
+        recipe.ingredients.forEach(ingredient => uniqueIngredients.add(ingredient.ingredient));
+        uniqueAppliances.add(recipe.appliance);
+        recipe.ustensils.forEach(utensil => uniqueUstensils.add(utensil));
+    });
+
+    // Fonction pour obtenir des données uniques triées
+    function getUniqueSortedData(dataSet) {
+        return Array.from(dataSet).map(item =>
+            item.charAt(0).toUpperCase() + item.substring(1).toLowerCase()
+        ).sort((a, b) => a.localeCompare(b));
+    }
+
+    const sortedUniqueIngredients = getUniqueSortedData(uniqueIngredients);
+    const sortedUniqueAppliances = getUniqueSortedData(uniqueAppliances);
+    const sortedUniqueUstensils = getUniqueSortedData(uniqueUstensils);
+
+    return [ sortedUniqueIngredients, sortedUniqueAppliances, sortedUniqueUstensils ]
 }
 
-const sortedUniqueIngredients = getUniqueSortedData(uniqueIngredients);
-const sortedUniqueAppliances = getUniqueSortedData(uniqueAppliances);
-const sortedUniqueUstensils = getUniqueSortedData(uniqueUstensils);
+const [ sortedUniqueIngredients, sortedUniqueAppliances, sortedUniqueUstensils ] = myFunction(recipes)
+
 
 // Mettre à jour la liste de filtre
-function updateFilterList(filterId, searchTerm) {
+function updateFilterList(filterId, searchTerm, filteredRecipes) {
+    const [ sortedUniqueIngredients, sortedUniqueAppliances, sortedUniqueUstensils ] = myFunction(filteredRecipes)
     const filterType = filterId.split('-')[0];
     let filterData;
+
+    console.log(sortedUniqueAppliances,sortedUniqueIngredients,sortedUniqueUstensils)
 
     switch (filterType) {
         case 'ingredients':
@@ -189,13 +225,13 @@ function initSearchField() {
 
         input.addEventListener('input', function () {
             clearIcon.style.display = this.value ? 'inline' : 'none';
-            updateFilterList(this.id, this.value);
+            updateFilterList(this.id, this.value, recipes);
         });
 
         clearIcon.addEventListener('click', function () {
             input.value = '';
             this.style.display = 'none';
-            updateFilterList(input.id, '');
+            updateFilterList(input.id, '', recipes);
             input.focus();
         });
     });
@@ -204,7 +240,7 @@ function initSearchField() {
 // Initialiser les filtres avec des données triées et non dupliquées
 function initFilterSearch(filterType, filterData) {
     const searchInput = document.querySelector(`#${filterType}-search`);
-    updateFilterList(searchInput.id, '');
+    updateFilterList(searchInput.id, '', recipes);
 }
 
 // Appeler les fonctions d'initialisation

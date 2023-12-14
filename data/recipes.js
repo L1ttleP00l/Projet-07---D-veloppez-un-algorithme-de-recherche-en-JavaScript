@@ -1075,7 +1075,7 @@ const recipes = [
         "servings": 4,
         "ingredients": [
             {
-                "ingredient": "Pois Cassé",
+                "ingredient": "Pois cassé",
                 "quantity": 500,
                 "unit": "gr"
             },
