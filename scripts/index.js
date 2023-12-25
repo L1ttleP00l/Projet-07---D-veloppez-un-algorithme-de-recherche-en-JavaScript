@@ -6,6 +6,10 @@ function createElement(type, classNames, content) {
     return element;
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function createIngredientItem(ingredient) {
     return `<div class="ingredient-item">
                 <span class="ingredient-name">${ingredient.ingredient}</span>
@@ -82,16 +86,11 @@ function extractUniqueItems(recipes, key) {
     return [...new Set(allItems)].sort();
 }
 
-// Fonction utilitaire pour capitaliser la première lettre
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 function updateFilterList(filterType, items) {
     const filterList = document.querySelector(`#${filterType}-list`);
     filterList.innerHTML = '';
     items.forEach(item => {
-        const capitalizedItem = capitalizeFirstLetter(item); // Capitaliser la première lettre
+        const capitalizedItem = capitalizeFirstLetter(item);
         const li = createElement('li', '', capitalizedItem);
         li.addEventListener('click', () => {
             handleFilterItemSelection(capitalizedItem, filterType);
@@ -135,6 +134,30 @@ function updateDisplay(searchTerm = '') {
     updateAllFilterLists(filteredRecipes);
 }
 
+// Fonction pour filtrer les éléments de la liste de filtres
+function filterFilterListItems(filterType, searchTerm) {
+    const filterList = document.querySelector(`#${filterType}-list`);
+    const items = filterList.querySelectorAll('li');
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(lowerCaseSearchTerm) ? '' : 'none';
+    });
+}
+
+// Gestionnaire d'événements pour les champs de recherche des filtres
+function setupFilterSearchEventListeners() {
+    document.querySelectorAll('.filters .search input').forEach(input => {
+        const filterType = input.id.split('-')[0]; // 'ingredients', 'appliances', ou 'ustensils'
+        
+        input.addEventListener('input', (event) => {
+            const searchTerm = event.target.value;
+            filterFilterListItems(filterType, searchTerm);
+        });
+    });
+}
+
 // Gestion des événements de filtre
 function closeAllFilterMenus() {
     document.querySelectorAll('.filters .content, .filters .select-btn').forEach(element => {
@@ -174,8 +197,10 @@ function setupSearchPlate() {
 document.addEventListener('DOMContentLoaded', () => {
     setupFilterEventListeners();
     setupSearchPlate();
+    setupFilterSearchEventListeners();
     updateDisplay(); // Mise à jour initiale de l'affichage
 });
+
 
 
 // Search function using loops
