@@ -129,10 +129,18 @@ function handleFilterItemSelection(item, filterType) {
 // Mise à jour de l'affichage des recettes et des listes de filtres
 function updateDisplay(searchTerm = '') {
     const searchInputValue = document.getElementById('search-plate').value.toLowerCase();
-    const filteredRecipes = filterRecipes(recipes, searchInputValue);
+
+    // Si le champ 'search-plate' est utilisé et contient moins de 3 caractères, ne pas filtrer sur ce critère.
+    // Sinon, utilisez les critères de filtrage combinés de 'search-plate' et des autres filtres.
+    if (searchInputValue.length < 3) {
+        searchTerm = '';
+    }
+
+    const filteredRecipes = filterRecipes(recipes, searchTerm || searchInputValue);
     displayRecipes(filteredRecipes);
     updateAllFilterLists(filteredRecipes);
 }
+
 
 // Fonction pour filtrer les éléments de la liste de filtres
 function filterFilterListItems(filterType, searchTerm) {
@@ -191,7 +199,17 @@ function setupSearchPlate() {
     searchInput.addEventListener('input', () => {
         updateDisplay(searchInput.value);
     });
+
+    // Ajouter un écouteur d'événements pour 'keydown'
+    searchInput.addEventListener('keydown', (event) => {
+        // Vérifier si la touche appuyée est 'Enter'
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            // Empêcher le comportement par défaut de la touche Entrée
+            event.preventDefault();
+        }
+    });
 }
+
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
@@ -199,6 +217,17 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSearchPlate();
     setupFilterSearchEventListeners();
     updateDisplay(); // Mise à jour initiale de l'affichage
+
+    // Gestionnaire d'événements pour la touche Échap
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' || event.keyCode === 27) {
+            closeAllFilterMenus(); // Appelle la fonction pour fermer les menus
+        }
+    });
+
+    
+    // Vider le champ 'search-plate'
+    document.getElementById('search-plate').value = '';
 });
 
 
