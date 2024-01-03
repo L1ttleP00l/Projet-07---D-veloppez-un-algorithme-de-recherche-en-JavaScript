@@ -128,11 +128,11 @@ function handleFilterItemSelection(item, filterType) {
 
 // Mise à jour de l'affichage des recettes et des listes de filtres
 function updateDisplay(searchTerm = '') {
-    const searchInputValue = document.getElementById('search-plate').value.toLowerCase();
+    const searchInputValue = searchTerm.toLowerCase();
 
-    // Si le champ 'search-plate' est utilisé et contient moins de 3 caractères, ne pas filtrer sur ce critère.
+    // Si le champ 'search-plate' est vide ou contient moins de 3 caractères, n'appliquer aucun filtre.
     // Sinon, utilisez les critères de filtrage combinés de 'search-plate' et des autres filtres.
-    if (searchInputValue.length < 3) {
+    if (searchInputValue.length === 0 || searchInputValue.length < 3) {
         searchTerm = '';
     }
 
@@ -166,6 +166,25 @@ function setupFilterSearchEventListeners() {
     });
 }
 
+// Gestionnaire pour fermer les menus lorsque l'on clique en dehors
+function handleClickOutside(event) {
+    // Sélectionnez tous les boutons et les contenus de menu
+    const selectButtons = document.querySelectorAll('.select-btn');
+    const menus = document.querySelectorAll('.content');
+
+    // Vérifier si le clic est en dehors de tous les boutons et de leurs menus
+    let isOutside = true;
+    selectButtons.forEach((btn, index) => {
+        if (btn.contains(event.target) || menus[index].contains(event.target)) {
+            isOutside = false;
+        }
+    });
+
+    if (isOutside) {
+        closeAllFilterMenus(); // Utiliser la fonction existante pour fermer les menus
+    }
+}
+
 // Gestion des événements de filtre
 function closeAllFilterMenus() {
     document.querySelectorAll('.filters .content, .filters .select-btn').forEach(element => {
@@ -179,9 +198,15 @@ function closeAllFilterMenus() {
 }
 
 function handleFilterButtonClick(event) {
-    closeAllFilterMenus();
     const filterContent = event.target.nextElementSibling;
-    if (!filterContent.classList.contains('active')) {
+    
+    // Vérifier si le menu est déjà ouvert
+    if (filterContent.classList.contains('active')) {
+        // Menu ouvert, donc fermer
+        closeAllFilterMenus();
+    } else {
+        // Menu fermé, donc ouvrir
+        closeAllFilterMenus(); // Fermer tous les autres menus ouverts
         filterContent.classList.add('active');
         event.target.classList.add('active');
     }
@@ -197,7 +222,14 @@ function setupSearchPlate() {
     const searchInput = document.getElementById('search-plate');
 
     searchInput.addEventListener('input', () => {
-        updateDisplay(searchInput.value);
+        const searchInputValue = searchInput.value.toLowerCase();
+        if (searchInputValue === '' || searchInputValue.length >= 3) {
+            updateDisplay(searchInputValue);
+        } else {
+            // Si le champ 'search-plate' est vide ou contient moins de 3 caractères,
+            // appelez simplement la fonction updateDisplay() sans critère de recherche.
+            updateDisplay();
+        }
     });
 
     // Ajouter un écouteur d'événements pour 'keydown'
@@ -211,12 +243,47 @@ function setupSearchPlate() {
 }
 
 
+
+
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
     setupFilterEventListeners();
     setupSearchPlate();
     setupFilterSearchEventListeners();
     updateDisplay(); // Mise à jour initiale de l'affichage
+
+    // Ajoutez des écouteurs d'événements pour chaque champ de recherche
+    document.querySelectorAll('.search input').forEach(input => {
+        // Pour search-plate
+        const searchInput = document.getElementById('search-plate');
+        const clearIcon = document.querySelector('form .clear-search');
+
+        searchInput.addEventListener('input', () => {
+            clearIcon.style.display = searchInput.value ? 'block' : 'none';
+        });
+
+        clearIcon.addEventListener('click', () => {
+            searchInput.value = '';
+            clearIcon.style.display = 'none';
+            // Mettre à jour l'affichage ou les filtres ici
+        });
+
+        // Pour les champs de recherche des filtres
+        const filterSearchInputs = document.querySelectorAll('.filters .dropdown-filter .search input');
+        filterSearchInputs.forEach(input => {
+            const clearIcon = input.nextElementSibling; // Assumer que l'icône de croix est juste après l'input
+
+            input.addEventListener('input', () => {
+                clearIcon.style.display = input.value ? 'block' : 'none';
+            });
+
+            clearIcon.addEventListener('click', () => {
+                input.value = '';
+                clearIcon.style.display = 'none';
+                // Mettre à jour l'affichage ou les filtres ici
+            });
+        });
+    });
 
     // Gestionnaire d'événements pour la touche Échap
     document.addEventListener('keydown', (event) => {
@@ -228,6 +295,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Vider le champ 'search-plate'
     document.getElementById('search-plate').value = '';
+
+    document.addEventListener('click', handleClickOutside);
 });
 
 

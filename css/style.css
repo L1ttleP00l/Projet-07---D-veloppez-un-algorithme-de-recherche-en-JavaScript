@@ -75,6 +75,17 @@ form #search-plate {
     outline: none;
 }
 
+form .clear-search {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    cursor: pointer;
+    display: none;
+}
+
+
 form button {
     position: absolute;
     z-index: 2;
