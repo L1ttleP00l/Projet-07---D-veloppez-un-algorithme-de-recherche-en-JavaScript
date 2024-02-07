@@ -1,4 +1,6 @@
-// Fonctions utilitaires
+// UTILITY FUNCTIONS
+
+// Creates a DOM element with optional classes and content
 function createElement(type, classNames, content) {
     const element = document.createElement(type);
     if (classNames) element.className = classNames;
@@ -6,10 +8,12 @@ function createElement(type, classNames, content) {
     return element;
 }
 
+// Capitalizes the first letter of a character string
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// Creates an HTML element for an ingredient, to be included in the recipe card
 function createIngredientItem(ingredient) {
     return `<div class="ingredient-item">
                 <span class="ingredient-name">${ingredient.ingredient}</span>
@@ -17,6 +21,7 @@ function createIngredientItem(ingredient) {
             </div>`;
 }
 
+// Create an HTML recipe card from a recipe object
 function createRecipeCard(recipe) {
     const ingredientsList = recipe.ingredients.map(createIngredientItem).join('');
     return `
@@ -35,23 +40,30 @@ function createRecipeCard(recipe) {
         </div>`;
 }
 
+// Updates the total number of recipes displayed
 function updateRecipeCount(count) {
     document.getElementById('recipe-count').textContent = `${count} recettes`;
 }
 
-// Affichage des recettes
+
+// RECIPE DISPLAY
+
+// Displays recipes in the appropriate container and updates the counter
 function displayRecipes(recipesToDisplay) {
     const recipesContainer = document.querySelector(".recipes-card-container");
     recipesContainer.innerHTML = recipesToDisplay.map(createRecipeCard).join('');
     updateRecipeCount(recipesToDisplay.length);
 }
 
-// Filtrage des recettes
+
+// RECIPE FILTERING
+
+// Retrieves selected filter elements of a given class
 function getSelectedFilterItems(filterClass) {
     return Array.from(document.querySelectorAll(filterClass)).map(item => item.textContent.trim().toLowerCase());
 }
 
-// Recherche fonctionnelle
+// Filter recipes according to search criteria and selected filters (functional approach)
 function filterRecipes(recipes, searchTerm) {
     const selectedIngredients = getSelectedFilterItems('.selected-ingredients .selected-item');
     const selectedAppliances = getSelectedFilterItems('.selected-appliances .selected-item');
@@ -73,7 +85,7 @@ function filterRecipes(recipes, searchTerm) {
     });
 }
 
-// Recherche avec les boucles natives 
+// Filter recipes according to search criteria and selected filters (native loop approach)
 // function filterRecipes(recipes, searchTerm) {
 //     const selectedIngredients = getSelectedFilterItems('.selected-ingredients .selected-item');
 //     const selectedAppliances = getSelectedFilterItems('.selected-appliances .selected-item');
@@ -147,12 +159,15 @@ function filterRecipes(recipes, searchTerm) {
 // }
 
 
-// Extraction et mise à jour des listes de filtres
+// UPDATE FILTER LISTS
+
+// Extract unique ingredients from all recipes to update filter list
 function extractUniqueIngredients(recipes) {
     const allIngredients = recipes.flatMap(recipe => recipe.ingredients.map(ing => ing.ingredient.toLowerCase()));
     return [...new Set(allIngredients)].sort();
 }
 
+// Extract unique items based on a specific key (e.g., 'appliance' or 'utensils')
 function extractUniqueItems(recipes, key) {
     const allItems = recipes.flatMap(recipe => {
         const items = recipe[key];
@@ -161,6 +176,7 @@ function extractUniqueItems(recipes, key) {
     return [...new Set(allItems)].sort();
 }
 
+// Updates filter list with extracted items
 function updateFilterList(filterType, items) {
     const filterList = document.querySelector(`#${filterType}-list`);
     filterList.innerHTML = '';
@@ -174,6 +190,7 @@ function updateFilterList(filterType, items) {
     });
 }
 
+// Updates all filter lists based on currently filtered recipes
 function updateAllFilterLists(recipes) {
     const uniqueIngredients = extractUniqueIngredients(recipes);
     const uniqueAppliances = extractUniqueItems(recipes, 'appliance');
@@ -184,7 +201,10 @@ function updateAllFilterLists(recipes) {
     updateFilterList('ustensils', uniqueUstensils);
 }
 
-// Gestionnaire pour la sélection d'un élément de filtre
+
+// MANAGING USER INTERACTION WITH FILTERS
+
+// Manages the selection of a filter element and updates the display accordingly
 function handleFilterItemSelection(item, filterType) {
     const selectedContainer = document.querySelector(`.selected-${filterType}`);
     const selectedItem = createElement('span', 'selected-item', item);
@@ -201,12 +221,10 @@ function handleFilterItemSelection(item, filterType) {
     updateDisplay(document.getElementById('search-plate').value);
 }
 
-// Mise à jour de l'affichage des recettes et des listes de filtres
+// Global display update based on search and selected filters
 function updateDisplay(searchTerm = '') {
     const searchInputValue = searchTerm.toLowerCase();
 
-    // Si le champ 'search-plate' est vide ou contient moins de 3 caractères, n'appliquer aucun filtre.
-    // Sinon, utilisez les critères de filtrage combinés de 'search-plate' et des autres filtres.
     if (searchInputValue.length === 0 || searchInputValue.length < 3) {
         searchTerm = '';
     }
@@ -217,7 +235,7 @@ function updateDisplay(searchTerm = '') {
 }
 
 
-// Fonction pour filtrer les éléments de la liste de filtres
+// Function to filter items in the filter list
 function filterFilterListItems(filterType, searchTerm) {
     const filterList = document.querySelector(`#${filterType}-list`);
     const items = filterList.querySelectorAll('li');
@@ -229,7 +247,7 @@ function filterFilterListItems(filterType, searchTerm) {
     });
 }
 
-// Gestionnaire d'événements pour les champs de recherche des filtres
+// Event listener configuration for filter search
 function setupFilterSearchEventListeners() {
     document.querySelectorAll('.filters .search input').forEach(input => {
         const filterType = input.id.split('-')[0]; // 'ingredients', 'appliances', ou 'ustensils'
@@ -241,7 +259,7 @@ function setupFilterSearchEventListeners() {
     });
 }
 
-// Gestionnaire pour fermer les menus lorsque l'on clique en dehors
+// Manage filter menu closing interactions
 function handleClickOutside(event) {
     // Sélectionnez tous les boutons et les contenus de menu
     const selectButtons = document.querySelectorAll('.select-btn');
@@ -260,7 +278,7 @@ function handleClickOutside(event) {
     }
 }
 
-// Gestion des événements de filtre
+// Closes all filter menus
 function closeAllFilterMenus() {
     document.querySelectorAll('.filters .content, .filters .select-btn').forEach(element => {
         element.classList.remove('active');
@@ -272,27 +290,27 @@ function closeAllFilterMenus() {
     });
 }
 
+// Manages clicks on filter selection buttons to open/close menus
 function handleFilterButtonClick(event) {
     const filterContent = event.target.nextElementSibling;
     
-    // Vérifier si le menu est déjà ouvert
     if (filterContent.classList.contains('active')) {
-        // Menu ouvert, donc fermer
         closeAllFilterMenus();
     } else {
-        // Menu fermé, donc ouvrir
-        closeAllFilterMenus(); // Fermer tous les autres menus ouverts
+        closeAllFilterMenus();
         filterContent.classList.add('active');
         event.target.classList.add('active');
     }
 }
 
+// Initialize event listeners on page load
 function setupFilterEventListeners() {
     document.querySelectorAll('.filters .select-btn').forEach(button => {
         button.addEventListener('click', handleFilterButtonClick);
     });
 }
 
+// Initial search configuration and display update
 function setupSearchPlate() {
     const searchInput = document.getElementById('search-plate');
 
@@ -301,35 +319,25 @@ function setupSearchPlate() {
         if (searchInputValue === '' || searchInputValue.length >= 3) {
             updateDisplay(searchInputValue);
         } else {
-            // Si le champ 'search-plate' est vide ou contient moins de 3 caractères,
-            // appelez simplement la fonction updateDisplay() sans critère de recherche.
             updateDisplay();
         }
     });
 
-    // Ajouter un écouteur d'événements pour 'keydown'
     searchInput.addEventListener('keydown', (event) => {
-        // Vérifier si la touche appuyée est 'Enter'
         if (event.key === 'Enter' || event.keyCode === 13) {
-            // Empêcher le comportement par défaut de la touche Entrée
             event.preventDefault();
         }
     });
 }
 
-
-
-
-// Initialisation
+// Global initialization on document loading
 document.addEventListener('DOMContentLoaded', () => {
     setupFilterEventListeners();
     setupSearchPlate();
     setupFilterSearchEventListeners();
-    updateDisplay(); // Mise à jour initiale de l'affichage
+    updateDisplay();
 
-    // Ajoutez des écouteurs d'événements pour chaque champ de recherche
     document.querySelectorAll('.search input').forEach(input => {
-        // Pour search-plate
         const searchInput = document.getElementById('search-plate');
         const clearIcon = document.querySelector('form .clear-search');
 
@@ -341,10 +349,8 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.value = '';
             clearIcon.style.display = 'none';
             updateDisplay();
-            // Mettre à jour l'affichage ou les filtres ici
         });
 
-        // Pour les champs de recherche des filtres
         const filterSearchInputs = document.querySelectorAll('.filters .dropdown-filter .search input');
         filterSearchInputs.forEach(input => {
             const clearIcon = input.nextElementSibling; // Assumer que l'icône de croix est juste après l'input
@@ -356,21 +362,17 @@ document.addEventListener('DOMContentLoaded', () => {
             clearIcon.addEventListener('click', () => {
                 input.value = '';
                 clearIcon.style.display = 'none';
-                // Mettre à jour l'affichage ou les filtres ici
             });
         });
     });
 
-    // Gestionnaire d'événements pour la touche Échap
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' || event.keyCode === 27) {
-            closeAllFilterMenus(); // Appelle la fonction pour fermer les menus
+            closeAllFilterMenus();
         }
     });
 
     
-    // Vider le champ 'search-plate'
     document.getElementById('search-plate').value = '';
-
     document.addEventListener('click', handleClickOutside);
 });
